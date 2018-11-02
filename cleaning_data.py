@@ -212,23 +212,23 @@ def get_matches(playing_stat):
             
     return pd.DataFrame(data=teams, index = [i for i in range(1,39)]).T
 
-def get_agg_points(playing_stat):
+def get_home_and_away_points(playing_stat):
     matchres = get_matches(playing_stat)
     cum_pts = get_cuml_points(matchres)
-    HTP = []
-    ATP = []
+    HomeTeamPoints = []
+    AwayTeamPoints = []
     j = 0
     for i in range(380):
         ht = playing_stat.iloc[i].HomeTeam
         at = playing_stat.iloc[i].AwayTeam
-        HTP.append(cum_pts.loc[ht][j])
-        ATP.append(cum_pts.loc[at][j])
+        HomeTeamPoints.append(cum_pts.loc[ht][j])
+        AwayTeamPoints.append(cum_pts.loc[at][j])
 
         if ((i + 1)% 10) == 0:
             j = j + 1
             
-    playing_stat['HTP'] = HTP
-    playing_stat['ATP'] = ATP
+    playing_stat['HTP'] = HomeTeamPoints
+    playing_stat['ATP'] = AwayTeamPoints
     return playing_stat
     
 # Apply to each dataset
