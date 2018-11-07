@@ -17,6 +17,22 @@ def get_target_label_for_data(data):
 
 	return attributes, target_label
 
+def get_home_not_home(data):
+	data['FTR'] = data.FTR.apply(only_hw)
+
+	attributes = data.drop(['FTR'],1)
+	target_label = data['FTR']
+
+	return attributes, target_label
+
+
+def only_hw(string):
+    if string == 'H':
+        return 'H'
+    else:
+        return 'NH'
+
+
 # attributes, target_label = get_target_label_for_data(data)
 
 # test_attributes , test_target_label = get_target_label_for_data(test_data)
@@ -67,3 +83,12 @@ def split_data(data, test_data):
 	return attributes, test_attributes, target_label, test_target_label
 
 
+def split_data_only_hw(data, test_data):
+	attributes, target_label = get_home_not_home(data)
+	test_attributes , test_target_label = get_home_not_home(test_data)
+	attributes = standardise_data(attributes)
+	test_attributes = standardise_data(test_attributes)
+	attributes = convert_categorical_variables(attributes)
+	test_attributes = convert_categorical_variables(test_attributes)
+
+	return attributes, test_attributes, target_label, test_target_label

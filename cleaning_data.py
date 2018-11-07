@@ -25,6 +25,7 @@ data17 = pd.read_csv(loc + '2016-17.csv', error_bad_lines=False)
 data18 = pd.read_csv(loc + '2017-18.csv', error_bad_lines=False)
 
 
+
 def get_date(date):
     if date == '':
         return None
@@ -212,7 +213,7 @@ def get_matches(playing_stat):
             
     return pd.DataFrame(data=teams, index = [i for i in range(1,39)]).T
 
-def get_home_and_away_points(playing_stat):
+def get_agg_points(playing_stat):
     matchres = get_matches(playing_stat)
     cum_pts = get_cuml_points(matchres)
     HomeTeamPoints = []
@@ -499,9 +500,12 @@ def only_hw(string):
     
 #playing_stat['FTR'] = playing_stat.FTR.apply(only_hw)
 
-playing_stat_test = playing_stat[5700:]
-playing_stat = playing_stat[0:5700]
+print(len(playing_stat))
+
+playing_stat_test = playing_stat[6790:]
+playing_stat = playing_stat[0:6790]
 
 
-playing_stat.to_csv(loc + "final_dataset_project.csv")
-playing_stat_test.to_csv(loc+"test_project.csv")
+
+playing_stat.to_csv(loc + "final_dataset_project_full.csv")
+playing_stat_test.to_csv(loc+"test_project_full.csv")
