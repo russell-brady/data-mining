@@ -3,12 +3,16 @@ from data_preparation import *
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 
-data = pd.read_csv('Datasets/relevant_data/cleanedDataset.csv', index_col = 0)
-test_data = pd.read_csv('Datasets/relevant_data/cleanedTestDataset.csv', index_col = 0)
+data = pd.read_csv('Datasets/relevant_data/cleanedDataset_full.csv', index_col = 0)
+test_data = pd.read_csv('Datasets/relevant_data/cleanedTestDataset_full.csv', index_col = 0)
 
-attributes, test_attributes, target_label, test_target_label = split_data(data, test_data)
+attributes1, test_attributes1, target_label1, test_target_label1 = split_data(data, test_data)
 
-#print(test_target_label)
+#new_attributes, new_test_attributes, new_target_label, new_test_target_label = split_data_only_hw(data, test_data)
+
+
+
+#print(new_target_label)
 
 def knn(attributes, target_label, test_attributes):
 
@@ -54,15 +58,28 @@ def get_accuracy(test_target_label, prediction):
 
 
 
-knn_prediction = knn(attributes, target_label, test_attributes)
-print("knn")
-print(get_accuracy(test_target_label, knn_prediction))
+knn_prediction1 = knn(attributes1, target_label1, test_attributes1)
+print("knn -- home Away Draw")
+print(get_accuracy(test_target_label1, knn_prediction1))
 
-nb_prediction =  nb(attributes, target_label, test_attributes)
-print("nb")
-print(get_accuracy(test_target_label, nb_prediction))
+nb_prediction1 =  nb(attributes1, target_label1, test_attributes1)
+print("nb home Away Draw")
+print(get_accuracy(test_target_label1, nb_prediction1))
 
-tree_prediction = tree(attributes, target_label, test_attributes)
-print("tree")
-print(get_accuracy(test_target_label, tree_prediction))
+tree_prediction1 = tree(attributes1, target_label1, test_attributes1)
+print("tree home Away Draw")
+print(get_accuracy(test_target_label1, tree_prediction1))
+
+
+# knn_prediction = knn(new_attributes, new_target_label, new_test_attributes)
+# print("knn")
+# print(get_accuracy(new_test_target_label, knn_prediction))
+
+# nb_prediction =  nb(new_attributes, new_target_label, new_test_attributes)
+# print("nb")
+# print(get_accuracy(new_test_target_label, nb_prediction))
+
+# tree_prediction = tree(new_attributes, new_target_label, new_test_attributes)
+# print("tree")
+# print(get_accuracy(new_test_target_label, tree_prediction))
 

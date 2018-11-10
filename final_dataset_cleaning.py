@@ -1,7 +1,7 @@
 import pandas as pd
 
-data = pd.read_csv('Datasets/final_dataset_project.csv')
-test_data = pd.read_csv('Datasets/test_project.csv')
+data = pd.read_csv('Datasets/final_dataset_project_full.csv')
+test_data = pd.read_csv('Datasets/test_project_full.csv')
 print(data.head())
 
 def drop_irrelevant_data(data, test_data): 
@@ -38,8 +38,8 @@ print ("Number of features: {}".format(number_of_features))
 print ("Number of matches won by home team: {}".format(number_homewins))
 print ("Win rate of home team: {:.2f}%".format(win_rate))
 
-cleaned_data.to_csv('Datasets/relevant_data/cleanedDataset.csv')
-cleaned_test_data.to_csv('Datasets/relevant_data/cleanedTestDataset.csv')
+cleaned_data.to_csv('Datasets/relevant_data/cleanedDataset_full.csv')
+cleaned_test_data.to_csv('Datasets/relevant_data/cleanedTestDataset_full.csv')
 
 
 

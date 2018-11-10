@@ -7,10 +7,16 @@ import xgboost as xgb
 from sklearn.svm import SVC
 import numpy as np
 
-data = pd.read_csv('Datasets/relevant_data/cleanedDataset.csv', index_col = 0)
-test_data = pd.read_csv('Datasets/relevant_data/cleanedTestDataset.csv', index_col = 0)
+data = pd.read_csv('Datasets/relevant_data/cleanedDataset_full.csv', index_col = 0)
+test_data = pd.read_csv('Datasets/relevant_data/cleanedTestDataset_full.csv', index_col = 0)
 
-attributes, test_attributes, target_label, test_target_label = split_data(data, test_data)
+attributes, test_attributes, target_label, test_target_label = split_data_only_hw(data, test_data)
+
+# print(target_label['A'])
+
+# print(target_label)
+
+print(len(attributes), len(test_attributes))
 
 def train_classifier(clf, X_train, y_train):
     ''' Fits a classifier to the training data. '''
@@ -67,3 +73,48 @@ train_predict(clf_B, attributes, target_label, test_attributes, test_target_labe
 print()
 train_predict(clf_C, attributes, target_label, test_attributes, test_target_label)
 print()
+
+# TODO: Import 'GridSearchCV' and 'make_scorer'
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer
+
+
+# TODO: Create the parameters list you wish to tune
+parameters = { 'learning_rate' : [0.1],
+               'n_estimators' : [40],
+               'max_depth': [3],
+               'min_child_weight': [3],
+               'gamma':[0.4],
+               'subsample' : [0.8],
+               'colsample_bytree' : [0.8],
+               'scale_pos_weight' : [1],
+               'reg_alpha':[1e-5]
+             }  
+
+# TODO: Initialize the classifier
+clf = xgb.XGBClassifier(seed=2)
+
+# TODO: Make an f1 scoring function using 'make_scorer' 
+f1_scorer = make_scorer(f1_score,pos_label='H')
+
+
+# TODO: Perform grid search on the classifier using the f1_scorer as the scoring method
+grid_obj = GridSearchCV(clf,
+                        scoring=f1_scorer,
+                        param_grid=parameters,
+                        cv=5)
+
+# TODO: Fit the grid search object to the training data and find the optimal parameters
+grid_obj = grid_obj.fit(attributes,target_label)
+
+# Get the estimator
+clf = grid_obj.best_estimator_
+#print clf
+
+# Report the final F1 score for training and testing after parameter tuning
+f1, acc = predict_labels(clf, attributes, target_label)
+print(acc)
+print("F1 score and accuracy score for training set: {:.4f} , {:.4f}.".format(np.amax(f1) , acc))
+    
+f1, acc = predict_labels(clf, test_attributes, test_target_label)
+print ("F1 score and accuracy score for test set: {:.4f} , {:.4f}.".format(np.amax(f1) , acc))
