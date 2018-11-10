@@ -43,6 +43,7 @@ def convert_categorical_variables(attributes):
 	output = pd.DataFrame(index = attributes.index)
 	for col, col_data in attributes.iteritems():
 			if col_data.dtype == object:
+				print(col_data)
 				col_data = pd.get_dummies(col_data, prefix = col)
 			output = output.join(col_data)
 
@@ -67,3 +68,28 @@ def split_data(data, test_data):
 	return attributes, test_attributes, target_label, test_target_label
 
 
+data = pd.read_csv('Datasets/relevant_data/cleanedDataset.csv', index_col = 0)
+test_data = pd.read_csv('Datasets/relevant_data/cleanedTestDataset.csv', index_col = 0)
+
+def convert_categorical_variables1(attributes):
+	output = pd.DataFrame(index = attributes.index)
+	for col, col_data in attributes.iteritems():
+			if col_data.dtype == object and col != 'FTR':
+				# print(col_data)
+				col_data = pd.get_dummies(col_data, prefix = col)
+			output = output.join(col_data)
+
+	return output
+
+test = pd.concat([data, test_data], ignore_index=True)
+print(len(test_data))
+data = standardise_data(test)
+
+# cols = ['HTP', 'ATP', 'HM1_D', 'HM1_D','HM1_D','AM1_D','AM3_L','AM3_W', 'HTGD','ATGD','DiffFormPoints','DiffLP','FTR']
+cols = ['HTP','ATP', 'HM1', 'HM2', 'HM3', 'AM1', 'AM2', 'AM3','HTGD','ATGD','DiffFormPts','DiffLP', 'FTR']
+data = data[cols]
+data = convert_categorical_variables1(data)
+print(data)
+print(len(data))
+
+data.to_csv('Datasets/relevant_data/forBayes.csv')
