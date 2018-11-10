@@ -6,10 +6,10 @@ import math
 def loadCsv(filename):
 	lines = csv.reader(open(filename, "r"))
 	dataset = list(lines)
-	for i in range(len(dataset)):
-		dataset[i] = [x for x in dataset[i][1:-1]] + [dataset[i][-1]]
-		print(type(dataset[i][0]))
-	return dataset
+	for i in range(1, len(dataset)):
+		dataset[i] = [float(x) for x in dataset[i][1:-1]] + [dataset[i][-1]]
+		#print(float(dataset[i][0]))
+	return dataset[1:]
 
 def splitDataset(dataset, splitRatio):
 	trainSize = int(len(dataset) * splitRatio)
@@ -26,7 +26,7 @@ def separateByClass(dataset):
 		vector = dataset[i]
 		if (vector[-1] not in separated):
 			separated[vector[-1]] = []
-		separated[vector[-1]].append(vector)
+		separated[vector[-1]].append(vector[0:-1])
 	return separated
 
 def mean(numbers):
@@ -45,7 +45,7 @@ def summarize(dataset):
 def summarizeByClass(dataset):
 	separated = separateByClass(dataset)
 	summaries = {}
-	for classValue, instances in separated.iteritems():
+	for classValue, instances in separated.items():
 		summaries[classValue] = summarize(instances)
 	return summaries
 
@@ -55,7 +55,7 @@ def calculateProbability(x, mean, stdev):
 
 def calculateClassProbabilities(summaries, inputVector):
 	probabilities = {}
-	for classValue, classSummaries in summaries.iteritems():
+	for classValue, classSummaries in summaries.items():
 		probabilities[classValue] = 1
 		for i in range(len(classSummaries)):
 			mean, stdev = classSummaries[i]
@@ -66,7 +66,7 @@ def calculateClassProbabilities(summaries, inputVector):
 def predict(summaries, inputVector):
 	probabilities = calculateClassProbabilities(summaries, inputVector)
 	bestLabel, bestProb = None, -1
-	for classValue, probability in probabilities.iteritems():
+	for classValue, probability in probabilities.items():
 		if bestLabel is None or probability > bestProb:
 			bestProb = probability
 			bestLabel = classValue
@@ -90,8 +90,9 @@ def main():
 	filename = 'Datasets/relevant_data/forBayes.csv'
 	splitRatio = 0.85
 	dataset = loadCsv(filename)
-	# print(dataset)
+	#print(dataset[0])
 	trainingSet, testSet = splitDataset(dataset, splitRatio)
+	print(separateByClass(trainingSet))
 	print(len(testSet))
 	# print('Split {0} rows into train={1} and test={2} rows').format(len(dataset), len(trainingSet), len(testSet))
 	# prepare model
@@ -99,6 +100,6 @@ def main():
 	# test model
 	predictions = getPredictions(summaries, testSet)
 	accuracy = getAccuracy(testSet, predictions)
-	print('Accuracy: {0}%').format(accuracy)
+	print('Accuracy: ' + str(accuracy))
 
 main()
