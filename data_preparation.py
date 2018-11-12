@@ -1,6 +1,7 @@
 from sklearn.preprocessing import scale
 from sklearn.model_selection import train_test_split
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # data = pd.read_csv('Datasets/relevant_data/cleanedDataset.csv', index_col = 0)
 # test_data = pd.read_csv('Datasets/relevant_data/cleanedTestDataset.csv', index_col = 0)
@@ -105,9 +106,13 @@ data = standardise_data(test)
 # cols = ['HTP', 'ATP', 'HM1_D', 'HM1_D','HM1_D','AM1_D','AM3_L','AM3_W', 'HTGD','ATGD','DiffFormPoints','DiffLP','FTR']
 cols = ['HTP','ATP', 'HM1', 'HM2', 'HM3', 'AM1', 'AM2', 'AM3','HTGD','ATGD','DiffFormPts','DiffLP', 'FTR']
 data = data[cols]
-data = convert_categorical_variables1(data)
-print(data)
-print(len(data))
 
-data.to_csv('Datasets/relevant_data/forBayes.csv')
+#data = convert_categorical_variables1(data)
+data = data.drop(['HM1', 'HM2', 'HM3', 'AM1', 'AM2', 'AM3'], 1)
+#data['HTP'].hist(bins=10)
+#plt.xlabel("HTP")
+#plt.show()
+print(data)
+
+data.to_csv('Datasets/relevant_data/forBayes2.csv')
 

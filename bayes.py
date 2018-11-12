@@ -87,8 +87,8 @@ def getAccuracy(testSet, predictions):
 	return (correct/float(len(testSet))) * 100.0
 
 def main():
-	filename = 'Datasets/relevant_data/forBayes.csv'
-	splitRatio = 0.85
+	filename = 'Datasets/relevant_data/forBayes2.csv'
+	splitRatio = 0.9
 	dataset = loadCsv(filename)
 	#print(dataset[0])
 	trainingSet, testSet = splitDataset(dataset, splitRatio)
