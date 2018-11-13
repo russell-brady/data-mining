@@ -35,12 +35,9 @@ def knn(attributes, target_label, test_attributes):
 
  
 def nb(attributes, target_label, test_attributes):
-
 	classifier = GaussianNB()
-
 	classifier.fit(attributes, target_label)
 	prediction = classifier.predict(test_attributes)
-
 	return prediction
 
 
@@ -98,6 +95,7 @@ print(get_accuracy(y_test, knn_prediction1))
 
 nb_prediction1 =  nb(X_train, y_train, X_test)
 print("nb home Away Draw")
+print(nb_prediction1)
 print(get_accuracy(y_test, nb_prediction1))
 
 tree_prediction1 = tree(X_train, y_train, X_test)

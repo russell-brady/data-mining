@@ -87,15 +87,18 @@ def getAccuracy(testSet, predictions):
 	return (correct/float(len(testSet))) * 100.0
 
 def main():
-	filename = 'Datasets/relevant_data/forBayes2.csv'
-	splitRatio = 0.9
+	filename = 'Datasets/relevant_data/forBayes.csv'
+	splitRatio = 0.94
 	dataset = loadCsv(filename)
 	#print(dataset[0])
 	trainingSet, testSet = splitDataset(dataset, splitRatio)
-	print(separateByClass(trainingSet))
-	print(len(testSet))
+	#print(separateByClass(trainingSet))
+	#print(len(testSet))
 	# print('Split {0} rows into train={1} and test={2} rows').format(len(dataset), len(trainingSet), len(testSet))
+	
 	# prepare model
+	print("Preparing NB classifier...")
+	print("Training...")
 	summaries = summarizeByClass(trainingSet)
 	# test model
 	predictions = getPredictions(summaries, testSet)
